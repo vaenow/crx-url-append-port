@@ -1,30 +1,33 @@
+function setDOMInfo(tabs, msgResp) {
+  document.getElementById('check').innerHTML = msgResp.info || 'ok.';
 
-// Update the relevant fields with the new data
-function setDOMInfo(info) {
-  document.getElementById('check').innerHTML = "ok";
+  if (msgResp.url) {
+    chrome.tabs.update(tabs[0].id, {
+      url: msgResp.url
+    });
+  }
+
 }
 
 // Once the DOM is ready...
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('DOMContentLoaded', function() {
   document.getElementById('check').addEventListener('click', parseImg);
 });
 
-function parseImg () {
-  // ...query for the active tab...
+function parseImg() {
   chrome.tabs.query({
     active: true,
     currentWindow: true
-  }, function (tabs) {
-	console.log(tabs);
-    // ...and send a request for the DOM info...
+  }, function(tabs) {
+    console.log(tabs);
     chrome.tabs.sendMessage(
-        tabs[0].id,
-        {from: 'popup', subject: 'parseImg'},
-        // ...also specifying a callback to be called 
-        //    from the receiving end (content script)
-        setDOMInfo);
+      tabs[0].id, 
+      {
+        from: 'popup',
+        subject: 'parseImg'
+      },
+      function(msgResp) {
+        setDOMInfo(tabs, JSON.parse(msgResp))
+      });
   });
 }
-
-
-

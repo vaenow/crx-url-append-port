@@ -1,8 +1,8 @@
 {
-  "name": "original-img",
+  "name": "append-port",
   "version": "1.0",
   "manifest_version": 2,
-  "description": "Use Chrome Extension to get original image size in Taobao for her",
+  "description": "Append a port number after url host",
   "icons": {
     "128": "img/snow-128.png"
   },
@@ -17,9 +17,10 @@
     "default_icon": "img/snow.png",
     "default_popup": "popup.html"
   },
+  "permissions": ["tabs"],
   "content_scripts": [
     {
-      "matches": ["*://*.taobao.com/*"],
+      "matches": ["*://*.com/*"],
       "css": ["css/contentstyle.css"],
       "js": ["js/contentscript.js"]
     }
